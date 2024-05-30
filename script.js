@@ -1,15 +1,23 @@
 /**
  * TODO
- * Add reintro of elements after a command is called
+ * So I managed to get input in the new forms but they dont work correctly:
+ * They accept input and enter key but the up/down arrow functions dont work
+ * Also the .input/.select function dont work
+ * Also it doesnt apply permText() to it
+ * 
+ * In short all funcs dont work on new forms.
+ * 
+ * Try to play around with permText func where I add inner/outer HTML 
+ * 
  * Finish Email Func
  */
 
 /* ********** GLOBAL VARS START ********** */
+const page = document.querySelector(".page");
 const terminal = document.querySelector(".terminal");
-const terminalCpy = document.querySelector(".terminal").innerHTML;
-const textarea = document.querySelector("#command");
+const terminalCpy = terminal.cloneNode(true);
+const textarea = document.getElementById("command");
 
-console.log(terminal)
 // History is an array where I will push all commands entered into
 const history = [];
 let ctr = -1; // This is too iterate thru history
@@ -35,6 +43,19 @@ const myData = {
 
 /* ********** GLOBAL VARS END ********** */
 
+/* 
+  Simply so i don't have to rewrite this for every case 
+  Replaces form with a span and outputs new form
+*/
+const permText = (text) => {
+  const span = document.createElement("span")
+  
+  // span.textContent = `${text}`;
+  // textarea.replaceWith(span);
+
+  terminal.innerHTML += terminal.innerHTML;
+}
+
 const sendEmail = (domVar) => {
   // Unknown
   return 0;
@@ -45,45 +66,40 @@ const command = (cmd) => {
   // I need to clear out both printOut and div
   const printOut = document.querySelector(".printout");
   const div = document.createElement("div");
-  const span = document.createElement("span")
   let arr; // Temp value to map out arrays
 
   printOut.innerHTML = ""; // Resets printOut so that only one cmd is visible at a time
   switch (cmd.toLowerCase()) {
     case "whoami":
-      div.innerHTML = `<br>${myData.bio[0].desc}<br><br>`;
+      div.textContent = `${myData.bio[0].desc}`;
       printOut.append(div);
-      span.innerHTML = `whoami`;
-      textarea.replaceWith(span);
+      permText(cmd);
       break;
     case "links":
       arr = myData.links.map((x) => {
         return x.link;
       });
       for (let i = 0; i < arr.length; i++) {
-        div.innerHTML += `<br><a href="${arr[i]}" target="_blank">${arr[i]}</a><br>`;
+        div.innerHTML += `<a href="${arr[i]}" target="_blank">${arr[i]}</a><br>`;
       }
       printOut.append(div);
-      span.innerHTML = `links`;
-      textarea.replaceWith(span);
+      permText(cmd);
       break;
     case "email":
       //Still need to do this
       // sendEmail(div);
       printOut.append(`Coming soon`);
-      span.innerHTML = `email`;
-      textarea.replaceWith(span);
+      permText(cmd);
       break;
     case "help":
       arr = myData.commandList.map((x) => {
         return x.command.toUpperCase() + "\t" + x.desc;
       });
       for (let i = 0; i < arr.length; i++) {
-        div.innerHTML += `<br>${arr[i]}<br>`;
+        div.innerHTML += `${arr[i]}<br>`;
       }
       printOut.append(div);
-      span.innerHTML = `help`;
-      textarea.replaceWith(span);
+      permText(cmd);
       break;
 
     case "clear":
@@ -91,19 +107,18 @@ const command = (cmd) => {
       break;
 
     default:
-      div.innerHTML += `<br>${cmd} is not recognized as a command.`;
+      div.textContent += `${cmd} is not recognized as a command.`;
       printOut.append(div);
-      span.innerHTML = `${cmd}`;
-      textarea.replaceWith(span);
-    }
+      permText(cmd);
+  }
 };
 
 //Func to read keystrokes from form
 const submitOn = (e) => {
   let textareaValue;
   // Checks that enter is pressed; If key is held down, input isn't read
-  const newEvent = new Event("button", { cancelable: true });
-  e.target.form.dispatchEvent(newEvent);
+  const newEvent = new e.constructor("button", { cancelable: true });
+  textarea.dispatchEvent(newEvent);
 
   if (!e.repeat){
     switch (e.key) {
@@ -114,7 +129,6 @@ const submitOn = (e) => {
           command(textareaValue);
           history.push(textareaValue);
         }
-        terminal.innerHTML+=(terminalCpy);
         break;
       case "ArrowUp":
         if (history.length === 0) break;
@@ -136,7 +150,7 @@ main = () => {
   // This makes it so that cursor auto-starts in textarea
   // textarea.focus();
   // textarea.select();
-  textarea.addEventListener("keydown", submitOn);
+  terminal.addEventListener("keydown", submitOn);
 };
 
 main();
