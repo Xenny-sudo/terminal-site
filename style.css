@@ -1,5 +1,5 @@
 *{
-    --orange: rgb(251, 163, 1);
+    --orange: rgb(235, 170, 49);
     --purple: rgb(186, 41, 123);
 
     font-family: monospace;
@@ -24,7 +24,7 @@ body{
 }
 
 #command{
-    /* background: none; */
+    background: none;
     border: none;
     border-radius: .15rem;
     resize: none;

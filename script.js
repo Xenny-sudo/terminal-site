@@ -27,7 +27,7 @@ const myData = {
   commandList: [
     { command: "whoami", desc: `A description of the creator of this site.` },
     { command: "links", desc: `All my social links.` },
-    { command: "email", desc: `Send an email.` },
+    //{ command: "email", desc: `Send an email.` },
     { command: "help", desc: `Display all possible commands.` },
   ],
   bio: [
@@ -148,8 +148,8 @@ const submitOn = (e) => {
 
 main = () => {
   // This makes it so that cursor auto-starts in textarea
-  // textarea.focus();
-  // textarea.select();
+  textarea.focus();
+  textarea.select();
   terminal.addEventListener("keydown", submitOn);
 };
 
