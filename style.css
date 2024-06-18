@@ -1,6 +1,6 @@
 *{
-    --orange: rgb(235, 170, 49);
-    --purple: rgb(186, 41, 123);
+    --orange: #ffa673;
+    --purple: #3c2149;
 
     font-family: monospace;
     font-size: large;
@@ -48,5 +48,5 @@ body{
 }
 
 .printout a:hover {
-    background: rgb(221, 144, 0);
+    background: #db8e62;
 }
